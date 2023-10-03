@@ -3,6 +3,6 @@ Breve descrição do grupo
 * Turno: [L]14
 * Grupo: 03
 * Alunos:
-    - Aluno1 up202006728 
+    - Francisco Mendonça up202006728 
     - Aluno2 up202108753
     - Aluno3 up202108754
