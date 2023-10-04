@@ -4,5 +4,5 @@ Breve descrição do grupo
 * Grupo: 03
 * Alunos:
     - Francisco Mendonça up202006728 
-    - Aluno2 up202108753
-    - Aluno3 up202108754
+    - José Francisco Veiga up202108753
+    - Pedro Marcelino up202108754
