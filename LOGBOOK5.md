@@ -1,12 +1,8 @@
 ## TASK 1
-### 1.1
+
 It's better to launch a shell with assembly rather than using C
-
-### 1.2
+Guião semana 5
 Assembly Code for launching a bash. -> call execve() using as arguemnts the ebx, ecx and edx registers, respectively.
-
-### 1.3
-64-bit is similar to the 32bit shell code
 
 ## TASK 2
 We're given a file with a buffer overflow vulnerability -> using strcpy() to copy a larger string than a buffer.
@@ -41,6 +37,3 @@ Concluding we need to:
 -> put the shellcode at the end of the buffer
 -> offset = range(100, 200, 4)
 -> return address value = some address between the return address and the start of the shellcode (eg. &buffer + 350)
-
-
-
