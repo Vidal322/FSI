@@ -55,7 +55,7 @@ Since the user can write up to 40 bytes which are then written to a buffer with 
 
 Therefore by sending an input with 32 random characters with 'flag.txt' at the end we can override the variable meme_file and get the file flag.txt to be opened and printed into the terminal
 
-    * **Exploit**
+### Exploit
 
     r = remote('ctf-fsi.fe.up.pt', 4003)
     r.recvuntil(b":")
@@ -70,7 +70,7 @@ Therefore by sending an input with 32 random characters with 'flag.txt' at the e
 This time the same thing happened. However there was added an additional array which must contain a specific value for the file to be read.
 Since we're using little endian, the hexadecimal value had to be passed inverted, or by using the p32() pwn function.
 
-    * **Exploit**
+### Exploit
 
     r = remote('ctf-fsi.fe.up.pt', 4000)
     r.recvuntil(b":")
