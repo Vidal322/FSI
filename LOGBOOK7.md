@@ -32,6 +32,66 @@ This file is clearly unsafe since the input from the user read in int main() is 
 * The program will also need to be compiled with the **-z execstack** option, in order, to make the stack executable.
 
 
+## Task 1
+
+Firstly we send a benign message to the server running in the docker container on 10.9.0.5
+with the command:
+```
+$ echo hello | nc 10.9.0.5 9090
+```
+result:
+![Alt text](images\logbook7\task1-benign.png)
+
+We then were asked to crash the program which we achieved using the following input:
+
+```
+AAAA%n
+```
+This writes 4 to the address 0x41414141 which isn't a valid memory address, whcich ends up crashing the program
+
+![Alt text](images\logbook7\task1-crash.png)
+
+
+## Task 2 a
+
+We concluded we need 64 %x to get the server to start printing the beggining of the user input, we checked this by sending AAAA as the 4 first bytes in our input followed by 64 %x.
+
+![Alt text](images\logbook7\task2-a.png)
+
+## Task 2 b
+
+To print the string of the secret value given its address = 0x080b4008, we need to use the %s specifier, however we need to specify the address we want the %s to read from. 
+To do so, we wrote the address of the variable in little endian followed by %64$s which reads a string in the address present in the 64th position in stack (our input)
+
+``` py
+content = (0x080b4008).to_bytes(4,byteorder='little') + b"%64$s"
+```
+
+![Alt text](images\logbook7\task2-b.png)
+
+
+## Task 3 a
+
+To change the value of a variable using a format string vulnerabilities we need to use the %n which writes the number of characters written so far in the specified address. We used the same technique we used in task 2b
+
+```py
+content = (0x080e5068).to_bytes(4,byteorder='little') + b"%64$n"
+```
+
+![Alt text](images\logbook7\task3-a.png)
+
+## Task 3 b
+
+This task is the same as the task 3b, however we need to write 0x5000 to the address of the target variable, which means we need to write 20480 characters before calling %n. We can achieve this using %20476x which will write 20476 charcters in the user input.
+These amount of characters is enough because we've already written 4 characters when we wrote the address we want to write to.
+
+```py
+content = (0x080e5068).to_bytes(4,byteorder='little') +b"%20476x" + b"%64$n"
+```
+
+![Alt text](images\logbook7\task3-b.png)
+
+
 
 
 
