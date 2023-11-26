@@ -195,3 +195,66 @@ openssl enc -aes-128-cbc -e -in pic_original.bmp -out p2.bmp -K 0011223344556677
 ```
 
 ![Alt text](images\logbook10\cbc-picture.png)
+
+
+## CTF
+
+For this challenge we were given a python script with three algorithms:
+
+* gen() -> How the encryption key is generated
+* enc() -> encrpytion of a message using AES-CTR algorithm given a key and a nounce
+* dec() -> decryption of a ciphertext using AES-CTR algorithm given a key and a nounce
+
+In the port 6003 of the ctf-fsi.fe.up.pt server we were given the nounce and the ciphertext to be decripted
+
+* nounce: 04966f8808698c43fbab82fac6196196
+* ciphertext: 69f4e9a512825c9ac8316d10cad6ee261a58b71190e4d504765b30bdd052c6ad89585392c2dd4b
+
+Generally AES-CTR is a secure encryption method unless the key can be easily guessed.
+Which is the case of this one.
+Given the gen() algorithm:
+```py
+KEYLEN = 16
+def gen(): 
+	offset = 3 # Hotfix to make Crypto blazing fast!!
+	key = bytearray(b'\x00'*(KEYLEN-offset)) 
+	key.extend(os.urandom(offset))
+	return bytes(key)
+```
+
+We noitced the first 13 bytes of the key are always 0x00 whereas the last 3 are random
+This drastically reduces the number of possible keys from 2 *(8*16) to 2 * (8*3), which allows a brute force attack.
+
+To automate this we wrote a script that appends every byte array of length 3 to a prefix made of 13 \x00 until we find a message started by "flag{" which is the known flag.
+
+```py
+def find_key():
+	nounce = unhexlify('ce040ea87024867cd32c43020e9cb3ea')
+	ciphertext = unhexlify('56d7b1c581a723e47ac878bdc060442a61d7ed5ad117f3f96ff47c6974275eb64e5d9c53f25a88')
+	prefix = b'\x00' * 13
+	for i in range(256):
+		for j in range(256):
+			for k in range(256):
+				suffix = bytearray([i,j,k])
+				key = prefix + suffix
+				msg = dec(key, ciphertext, nounce)
+				print(f"key: {key.hex()}")
+				try:
+					msg = msg.decode('ascii')
+					print(msg)
+					if(msg[0:5] == 'flag{'):
+						return
+				except:
+					pass
+```
+
+After running the script for a while we got the flag:
+
+```
+flag{efb85b1bfff7f92546c2b7621759916b}
+```
+
+![Alt text](images/logbook10/ctf_res.png)
+
+
+
