@@ -125,7 +125,7 @@ The vulnerable file loads the global variable flag with the contents of flag.txt
 First we used gdb to get the flag variable address.
 
 
-![Alt text](format_strings1_ctf_gdb.png)
+![Alt text](images/logbook7/ctf1_gdb.png)
 
 After getting the address 0x804c060, the exploit consists in getting the string value in that address, which can be achieved with the format specifier %s.
 
@@ -137,8 +137,7 @@ p.sendline(p32(0x804c060) + b"%s")
 p.interactive()
 ```
 
-![Alt text](format_strings1_ctf_result.png)
-
+![Alt text](images/logbook7/ctf1_res.png)
 ```
 flag{669369e1c6689eb5de7c38c2feef0c95}
 ```
@@ -149,8 +148,7 @@ For this challenge, the checkseck result is the same as the one for challenge 1,
 
 We start by using gdb to get the address of the key global variable.
 
-![Alt text](format_strings2_ctf_gdb.png)
-
+![Alt text](images/logbook7/ctf2_gdb.png)
 0x804b324
 
 Then we need to write to this address using the %n format specifier.
@@ -169,8 +167,7 @@ r.recvuntil(b"here...")
 r.sendline(p32(0x804b324) +b"%1$.48875x" + b"%n")
 r.interactive()
 ```
-![Alt text](format_strings2_ctf_result.png)
-
+![Alt text](images/logbook7/ctf2_res.png)
 ```
 flag{aade366f8dc239bab6f89db1f010b512}
 ```
@@ -181,20 +178,20 @@ flag{aade366f8dc239bab6f89db1f010b512}
 
 Challenge 3's source code was identical to the source code in challenge number 2. However this time the address of the key global variable was 0x804b320.
 
-![Alt text](format_strings3_ctf_gdb.png)
+![Alt text](images/logbook7/ctf3_gdb.png)
 
 This is doesn't allow to use the same approach we used in challenge 2 as \x20 is the ascii representation of the space character which messes with the address we want to write to.
 
 Therefore, we tried to write 0xBEEF00 to the address immediately before: 0x804b31F.
 
-However the decimal representation of 0xBEEF00 is 12513024, which would require us to write that amount of characters in the input, and consequently get a connection timeout.
+However the decimal representation of 0xBEEF00 is 12513024, which would require us to write that amount of characters in the input, and consequently get a connection timeout before we could print the contents of flag.txt in the terminal.
 
 In order to go around this obstacle we decided to split the writing of the variable into 2.
 
 0x804b321 -> 0xBE = 190
 0x804b31F -> 0xEF00 = 61184
 
-This approach reduces the amount of characters we need to write drastically while getting the same output.
+This approach drastically reduces the amount of characters we need to write while getting the same result.
 
 This led to the exploit:
 
@@ -205,8 +202,7 @@ r.sendline(p32(0x804b321) + p32(0x804b31F) + b"%182x" + b"%1$hhn" + b"%60994x" +
 r.interactive()
 ```
 
-![Alt text](format_strings3_ctf_result.png)
-
+![Alt text](images/logbook7/ctf3_res.png)
 ```
 flag{8e9f922b23b061c32d1b2802bd363057}
 ```
