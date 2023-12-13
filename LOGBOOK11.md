@@ -233,3 +233,78 @@ We then add the certificate and key to the /certs folder of the apache server an
 
 ![Alt text](images/logbook11/Task6.png)
 
+
+
+## CTF - RSA Encryption
+
+For this challenge we were given the python script used to encrypt the flag.
+In the port 6004 of the ctf-fsi.fe.up.pt server we were given the public exponent, the modulus and the ciphertext.
+
+RSA is a secure encryption method, as long as the modulus is hard to factorize, however we were told the 2 prime factors of the modulus are close to 2^512 and 2^513.
+
+So in order to find those factors we used the Rabin-Miller algorithm on every number in the proximity of those 2 numbers to find out which ones are primes (p and q).
+
+```py
+def is_prime(n, k=30): # miller-rabin
+   if n < 2: return False
+   for p in [2,3,5,7,11,13,17,19,23,29]:
+       if n % p == 0: return n == p
+   s, d = 0, n-1
+   while d % 2 == 0:
+       s, d = s+1, d//2
+   for i in range(k):
+       x = pow(randint(2, n-1), d, n)
+       if x == 1 or x == n-1: continue
+       for r in range(1, s):
+           x = (x * x) % n
+           if x == 1: return False
+           if x == n-1: break
+       else: return False
+   return True
+
+
+def factorize():
+    delta = 10000
+    for i in range(pow(2,512) - delta, pow(2,512) + delta):
+        if is_prime(i)  and n % i == 0:
+            p = i
+            break
+
+    for i in range(pow(2,513) - delta, pow(2,513) + delta):
+        if is_prime(i) and n % i == 0:
+            q = i
+            break
+
+```
+
+With p and q we can find the private exponent which is equal to:
+
+```py
+    d = pow(e,-1, ((p-1)*(q-1)))
+```
+Knowing the private exponent we are ready to decode the ciphertext, using the given dec() function.
+However, since the ciphertext was printed was ecoded and hexlifyied we need to undo those steps before we decode the message.
+
+```py
+    ciphertext= b"3234306365326238356161643233353930306436303861653231343666336163356461316134336237333635646365363535373062633362633837393831393063326635383435303535346261643363636535393761663566373033663561623838383463333665633438336534313562323536393263386265363937353138313833663733386539313330383933323138643462646161303734613766623638323638616636663430653237636332333261376565303964643365643962313138383964373433636462633735323538326162643630303666306266343634373035343031353035313866626165663137653831613465363362376334366630303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030303030"
+
+    aux = unhexlify(ciphertext)
+
+    d = pow(e,-1, ((p-1)*(q-1)))
+
+    decrypted_message = dec(aux, d, n)
+    print("Decrypted message:", decrypted_message.decode())
+```
+
+We got the flag
+
+```
+flag{24c8e20b3ec4c8f90be63ce3fedf677f}
+```
+
+![Alt text](images/logbook11/ctf.png)
+
+
+
+
+
