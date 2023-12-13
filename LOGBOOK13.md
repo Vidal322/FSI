@@ -188,3 +188,48 @@ When attempted to ping 8.8.8.8 (google.com), the program worked as intended, how
 
 ![Alt text](images/logbook13/task1.4-(8.8.8.8).png)
 
+
+## CTF - Find my TLS
+
+For this CTF we're given a .pcapng file with some TLS connections.
+The flag has the following structure:
+```
+flag{<frame_start>-<frame_end>-<selected_cipher_suite>-<total_encrypted_appdata_exchanged>-<size_of_encrypted_message>}```
+
+Each of the components is related to the tls connection in which the random number of the Client Hello
+is 52362c11ff0ea3a000e1b48dc2d99e04c6d06ea1a061d5b8ddbf87b001745a27
+
+![Alt text](images/logbook13/ctf_random.png)
+
+We can start getting the components
+
+frame start - beggining of the TLS handshake - 814
+frame end - ending of the TLS handshake Message - 819
+
+
+![Alt text](images/logbook13/ctf_start_end.png)
+
+Selected Cipher Suite - defined in Server Hello
+
+```
+TLS_RSA_WITH_AES_128_CBC_SHA256
+```
+
+![Alt text](images/logbook13/ctf_cipherSuite.png)
+
+
+total_encrypted_appdata_exchanged - Sum of the encripted messages of the Application Data
+= 80 + 1184 = 1264
+
+![Alt text](images/logbook13/ctf_total_app_data.png)
+
+
+size_of_encrypted_message - size of the encrypted message with which ends the TLS handshake
+
+![Alt text](images/logbook13/ctf_encrypted_message.png)
+
+We got the flag
+
+```
+flag{814-819-TLS_RSA_WITH_AES_128_CBC_SHA256-1264-80}
+```
