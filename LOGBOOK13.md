@@ -177,12 +177,12 @@ pkt = sniff(iface='br-3a313668f771', filter='icmp', prn=send_packet)
 When attempted to ping 1.2.3.4 from Host A, the program worked as intended and answered the ping
 
 ![Alt text](images/logbook13/task1.4-(1.2.3.4).png)
+<br>
 
-
-When attempted to ping 10.9.0.99 however, since it is in the same network as host A, there are now icmp packets for the program to capture and therefore to reply to.
+When attempted to ping 10.9.0.99 however, since it is in the same network as host A, it will send "Who has" ARP messages before sending the icmp packets. This makes it so there are no icmp packets for the program to capture and therefore to reply to.
 
 ![Alt text](images/logbook13/task1.4-(10.9.0.99).png)
-
+<br>
 
 When attempted to ping 8.8.8.8 (google.com), the program worked as intended, however since the destination is also alive and replied to each ping, host A received a duplicate of each ping.
 
