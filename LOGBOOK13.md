@@ -58,7 +58,10 @@ As a root user, after pinging google.com from another container in the LAN, we g
 ![Alt text](images/logbook13/Task1.1-sudoPackets.png)
 
 However when not root, we got an error: Permisison Denied
-![Alt text](images/logbook13/Task1.1-seedPackets.png)
+![Alt text](images/logbook13/Task1.1-seedPackets.png)  s
+
+
+This happens because we need full access to the network interfaces which requires us root privilleges
 
 ### Task 1.1 B
 
