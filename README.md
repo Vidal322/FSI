@@ -6,9 +6,7 @@ Welcome to the Cybersecurity Course Logbooks repository! This repository contain
 - [Overview](#overview)
 - [Week-wise Logbooks](#week-wise-logbooks)
 - [Features](#features)
-- [Getting Started](#getting-started)
-- [Contributing](#contributing)
-- [License](#license)
+
 
 ## Overview
 
